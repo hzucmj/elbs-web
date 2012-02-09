@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.monitor.model.Article" table="tb_message" lazy="false">
+		<id name="mid" column="mid"></id>
+		<property name="uid" type="string"></property>
+		<property name="content" type="string"></property>
+		<property name="music" type="string"></property>
+		<property name="images" type="string"></property>
+		<property name="video" type="string"></property>
+		<property name="location" type="string"></property>
+		<property name="posttime" type="timestamp"></property>
+	</class>
+</hibernate-mapping>

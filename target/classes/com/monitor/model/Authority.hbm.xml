@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.monitor.model.Authority" table="tb_authorities" lazy="false">
+		<id name="aid" column="aid"></id>
+		<property name="uid" type="string"></property>
+		<property name="authority" type="string"></property>
+	</class>
+</hibernate-mapping>

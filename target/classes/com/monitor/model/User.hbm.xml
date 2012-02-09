@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.monitor.model.User" table="tb_user" lazy="false">
+		<id name="uid" column="uid"></id>
+		<property name="username" type="string"></property>
+		<property name="password" type="string"></property>
+		<property name="sex" type="string"></property>
+		<property name="idcard" type="string"></property>
+		<property name="employeeno" type="string"></property>
+		<property name="photo" type="string"></property>
+		<property name="nickname" type="string"></property>
+		<property name="birthday" type="timestamp"></property>
+		<property name="email" type="string"></property>
+		<property name="department" type="string"></property>
+		<property name="root" type="string"></property>
+		<property name="contact" type="string"></property>
+		<property name="enabled" type="boolean"></property>
+		<property name="createdtime" type="timestamp"></property>
+		<property name="updatedtime" type="timestamp"></property>	
+	</class>
+</hibernate-mapping>

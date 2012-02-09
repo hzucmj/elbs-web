@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+	
+	<!-- IDAO -->
+	
+	<bean id="userDao" class="com.monitor.dao.orm.HibernateUserDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>
+	</bean>
+	<bean id="authorityDao" class="com.monitor.dao.orm.HibernateAuthorityDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>
+	</bean>
+	<bean id="organizationDao" class="com.monitor.dao.orm.HibernateOrganizationDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>
+	</bean>
+	<bean id="articleDao" class="com.monitor.dao.orm.HibernateArticleDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>
+	</bean>
+	<!-- ISERVICE -->
+	
+	<bean id="userService" class="com.monitor.service.UserServiceImpl">
+		<property name="userDao">
+			<ref bean="userDao"/>
+		</property>
+	</bean>
+	<bean id="authorityService" class="com.monitor.service.AuthorityServiceImpl">
+		<property name="authorityDao">
+			<ref bean="authorityDao"/>
+		</property>
+	</bean>
+	<bean id="organizationService" class="com.monitor.service.OrganizationServiceImpl">
+		<property name="organizationDao">
+			<ref bean="organizationDao"/>
+		</property>
+	</bean>
+	<bean id="articleService" class="com.monitor.service.ArticleServiceImpl">
+		<property name="articleDao">
+			<ref bean="articleDao"/>
+		</property>
+	</bean>
+	<!-- ACTION -->
+	
+	<!-- <bean id="user" class="com.monitor.web.UserAction" scope="prototype">
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+	</bean> -->
+	<bean id="user" class="com.monitor.web.UserAction" scope="prototype">
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+		<property name="authorityService">
+			<ref bean="authorityService"/>
+		</property>
+	</bean>
+	<bean id="adminLogin" class="com.monitor.web.UserAction" scope="prototype">
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+		<property name="authorityService">
+			<ref bean="authorityService"/>
+		</property>
+	</bean>
+	<bean id="registe" class="com.monitor.web.RegisteAction" scope="prototype">
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+		<property name="authorityService">
+			<ref bean="authorityService"/>
+		</property>
+		<property name="organizationService">
+			<ref bean="organizationService"/>
+		</property>
+	</bean>
+	<bean id="member" class="com.monitor.web.MemberAction" scope="prototype">
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+		<property name="authorityService">
+			<ref bean="authorityService"/>
+		</property>
+	</bean>
+	<bean id="profile" class="com.monitor.web.MemberAction" scope="prototype">
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+		<property name="authorityService">
+			<ref bean="authorityService"/>
+		</property>
+		<property name="organizationService">
+			<ref bean="organizationService"/>
+		</property>
+	</bean>
+	<bean id="index" class="com.monitor.web.ArticleAction" scope="prototype">
+		<property name="articleService">
+			<ref bean="articleService" />
+		</property>
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+		<property name="authorityService">
+			<ref bean="authorityService"/>
+		</property>
+	</bean>	
+	<bean id="api" class="com.monitor.web.ApiAction" scope="prototype">
+		<property name="articleService">
+			<ref bean="articleService" />
+		</property>
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+		<property name="authorityService">
+			<ref bean="authorityService"/>
+		</property>
+		<property name="organizationService">
+			<ref bean="organizationService"/>
+		</property>
+	</bean>	
+	<bean id="dept" class="com.monitor.web.DeptAction" scope="prototype">
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+		<property name="organizationService">
+			<ref bean="organizationService"/>
+		</property>
+	</bean>	
+	<bean id="upload" class="com.monitor.web.UploadAction" scope="prototype">
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+	</bean>
+</beans>

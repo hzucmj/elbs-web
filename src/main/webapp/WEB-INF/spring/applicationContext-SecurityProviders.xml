@@ -1,0 +1,78 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+   <global-method-security secured-annotations="enabled"
+      access-decision-manager-ref="aclAccessDecisionManager" />
+
+
+    <http access-decision-manager-ref="accessDecisionManager" auto-config="false">
+    	<intercept-url pattern="/api.jxp" access="ROLE_GUEST,ROLE_USER,ROLE_ADMIN,ROLE_MASTER"/>
+    	<intercept-url pattern="/api.jsp" access="ROLE_GUEST,ROLE_USER,ROLE_ADMIN,ROLE_MASTER"/>
+    	<intercept-url pattern="/login.jsp" access="ROLE_USER,ROLE_ADMIN,ROLE_GUEST,ROLE_MASTER"/>
+    	<intercept-url pattern="/admin/adminLogin.jxp" access="ROLE_USER,ROLE_ADMIN,ROLE_GUEST,ROLE_MASTER"/> 
+    	<intercept-url pattern="/registe.jxp" access="ROLE_GUEST,ROLE_USER,ROLE_ADMIN,ROLE_MASTER"/>
+    	<intercept-url pattern="/index.jsp" access="ROLE_USER,ROLE_ADMIN,ROLE_MASTER"/>
+    	<intercept-url pattern="/*.jsp" access="ROLE_USER,ROLE_ADMIN,ROLE_MASTER"/>
+    	<intercept-url pattern="/*.jxp" access="ROLE_USER,ROLE_ADMIN,ROLE_MASTER"/>
+    	<!-- <intercept-url pattern="/index.jsp" access="ROLE_STUDENT,ROLE_TEACHER,ROLE_ADMIN" />
+        <intercept-url pattern="/index.jxp*" access="ROLE_STUDENT,ROLE_TEACHER,ROLE_ADMIN" />
+        <intercept-url pattern="/signon.jxp" access="ROLE_STUDENT,ROLE_TEACHER,ROLE_GUEST,ROLE_ADMIN"/>  
+    	<intercept-url pattern="/signin.jxp" access="ROLE_STUDENT,ROLE_TEACHER,ROLE_GUEST,ROLE_ADMIN"/>  
+		<intercept-url pattern="/*.jxp*" access="ROLE_STUDENT,ROLE_TEACHER,ROLE_ADMIN"/> -->
+        <!-- 
+		<intercept-url pattern="/*.jxp*" access="ROLE_USER"/>
+    	<intercept-url pattern="/signin.jxp" access="permitAll"/>    	
+        <intercept-url pattern="/messagePost*" access="ROLE_USER" />
+        <intercept-url pattern="/messageDelete*" access="ROLE_ADMIN,IP_LOCAL_HOST" />
+         -->
+        <anonymous username="guest" granted-authority="ROLE_GUEST"/>
+        <form-login login-page="/login.jsp" default-target-url="/"
+        authentication-failure-url="/login.jxp?error=true" /> 
+        <logout logout-success-url="/"/>
+        <remember-me />
+   </http>
+
+    <authentication-manager> 
+    <authentication-provider>    	
+    	<!-- 
+    	<password-encoder hash="md5" />
+        -->
+        <!-- <user-service>
+            <user name="admin" password="admin"
+                authorities="ROLE_ADMIN,ROLE_USER" />
+            <user name="demo" password="demo" authorities="ROLE_USER" />
+        </user-service> -->
+        <jdbc-user-service data-source-ref="dataSource" cache-ref="userCache"
+        	users-by-username-query="SELECT username, password, enabled FROM tb_user WHERE username = ?"
+        	authorities-by-username-query="SELECT tb_user.username, tb_authorities.authority FROM tb_user, tb_authorities WHERE tb_user.username = ? AND tb_user.uid = tb_authorities.uid" 
+        />
+    </authentication-provider>
+    </authentication-manager>     
+    
+	<beans:bean id="userCache"
+		class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache">
+		<beans:property name="cache" ref="userEhCache" />
+	</beans:bean>
+	
+	<beans:bean id="userEhCache"
+		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<beans:property name="cacheManager" ref="cacheManager" />
+		<beans:property name="cacheName" value="userCache" />
+	</beans:bean>
+		
+   <beans:bean id="accessDecisionManager"
+      class="org.springframework.security.access.vote.AffirmativeBased">
+      <beans:property name="decisionVoters">
+         <beans:list>
+             <beans:bean class="org.springframework.security.access.vote.RoleVoter" />
+             <beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+          </beans:list>
+       </beans:property>
+    </beans:bean> 
+
+</beans:beans>
